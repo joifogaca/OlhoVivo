@@ -23,6 +23,9 @@ namespace OlhoVivo.Data.Mappings
              .IsRequired() //gera o NOT NULL
              .HasColumnType("NVARCHAR")
              .HasMaxLength(80);
+
+            builder.HasIndex(x => x.Name, "IX_VEHICLE_NAME")
+               .IsUnique(); //GARANTE QUE O INDEX É UNICO
         }
     }
 }

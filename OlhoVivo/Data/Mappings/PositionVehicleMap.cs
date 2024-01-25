@@ -8,7 +8,8 @@ namespace OlhoVivo.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<PositionVehicle> builder)
         {
-            
+            builder.HasIndex(x => x.Vehicle, "IX_POSITIONVEHICLE_VEHICLE")
+               .IsUnique(); //GARANTE QUE O INDEX É UNICO
         }
     }
 }

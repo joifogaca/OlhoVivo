@@ -19,6 +19,9 @@ namespace OlhoVivo.Data.Mappings
                 .HasColumnType("NVARCHAR")
                 .HasMaxLength(80);
 
+
+            builder.HasIndex(x => x.Name, "IX_BUSSTOP_NAME")
+                .IsUnique(); //GARANTE QUE O INDEX É UNICO
         }
     }
 }
