@@ -19,9 +19,16 @@ namespace OlhoVivo.Data.Mappings
                 .HasColumnType("NVARCHAR")
                 .HasMaxLength(80);
 
+            builder.Property(x => x.Latitude)
+                .IsRequired();
+
+            builder.Property(x => x.Longitude)
+                .IsRequired();
 
             builder.HasIndex(x => x.Name, "IX_BUSSTOP_NAME")
                 .IsUnique(); //GARANTE QUE O INDEX É UNICO
+
+            
         }
     }
 }

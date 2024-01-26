@@ -26,6 +26,12 @@ namespace OlhoVivo.Data.Mappings
 
             builder.HasIndex(x => x.Name, "IX_VEHICLE_NAME")
                .IsUnique(); //GARANTE QUE O INDEX É UNICO
+
+            builder.HasOne(x => x.Line)
+                .WithMany(x => x.Vehicles) //Gera uma constraint
+                .HasConstraintName("FK_VEHICLE_LINE")
+                .OnDelete(DeleteBehavior.Cascade);  //deleta todos os relacionados
+
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OlhoVivo.Data.Mappings;
 using OlhoVivo.Models;
 
 namespace OlhoVivo.Data
@@ -11,11 +12,19 @@ namespace OlhoVivo.Data
 
         public DbSet<BusStop> BusStops { get; set; }
 
-        public DbSet<PositionVehicle> PositionVehicles { get; set; }
+        public DbSet<VehiclePositions> PositionVehicles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer("Server=localhost,1433;Database=Blog;User ID=sa;Password=1q2w3e4r@#$;Trusted_Connection=False; TrustServerCertificate=True;");
+            options.UseSqlServer("Server=localhost,1433;Database=OlhoVivo;User ID=sa;Password=1q2w3e4r@#$;Trusted_Connection=False; TrustServerCertificate=True;");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new VehicleMap());
+            modelBuilder.ApplyConfiguration(new LineMap());
+            modelBuilder.ApplyConfiguration(new BusStopMap());
+            modelBuilder.ApplyConfiguration(new VehiclePositionMap());
         }
 
     }

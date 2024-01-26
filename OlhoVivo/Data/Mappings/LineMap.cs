@@ -22,6 +22,19 @@ namespace OlhoVivo.Data.Mappings
             builder.HasIndex(x => x.Name, "IX_lINE_NAME")
                .IsUnique(); //GARANTE QUE O INDEX É UNICO
 
+            builder.HasMany(x => x.BusStops)
+                .WithMany(x => x.Lines)
+                .UsingEntity<Dictionary<string, object>>(
+                "Lines_BusStop",
+                line => line.HasOne<BusStop>()
+                .WithMany()
+                .HasForeignKey("BusStopId")
+                .HasConstraintName("FK_BusStopLine_BusStopId")
+                .OnDelete(DeleteBehavior.Cascade),
+                busStop => busStop.HasOne<Line>()
+                .WithMany()
+                .HasForeignKey("FK_BusStopLine_LineId")
+                .OnDelete(DeleteBehavior.Cascade));
         }
     }
 }

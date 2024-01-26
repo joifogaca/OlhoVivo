@@ -8,20 +8,22 @@
         }
 
         public Vehicle(string name, 
-            string model, long lineId)
+            string model, Line line)
         {
             Name = name;
             Model = model;
-            LineId = lineId;
+            Line = line;
         }
         public long Id { get; set; }
         public string Name { get; private set; }
         public string Model { get;  private set; }
-        public long LineId { get; private set; }
+        public Line Line { get; private set; }
 
-        public void AlterLine(long lineId)
+        public IList<VehiclePositions> VehiclePositions { get; private set; } = new List<VehiclePositions>();
+
+        public void AlterLine(Line line)
         {
-            LineId = lineId;
+            Line = line;
         }
     }
 }

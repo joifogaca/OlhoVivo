@@ -12,6 +12,8 @@
 
         public long Id { get; set; }
         public string Name { get; private set; }
+
+        public IList<Vehicle> Vehicles { get; set; }
         public IList<BusStop> BusStops { get; private set; } = new List<BusStop>();
 
         public void RemoveBusStop(BusStop busStop) {

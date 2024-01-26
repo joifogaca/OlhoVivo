@@ -17,5 +17,7 @@
         public string Name { get; private set; }
         public double Latitude { get; private set; }
         public double Longitude { get; private set; }
+
+        public IList<Line> Lines { get; private set;}
     }
 }
