@@ -8,9 +8,9 @@ namespace OlhoVivo.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<VehiclePositions> builder)
         {
-            builder.HasKey("DateTime", "Vehicle");
-
-            builder.HasIndex(x => x.Vehicle, "IX_POSITIONVEHICLE_VEHICLE");
+            builder.HasKey(x => new { x.DateTime, x.VehicleId});
+           
+            //builder.HasIndex(x =>new { x.Vehicle.Id, x.DateTime })
             //.IsUnique(); //GARANTE QUE O INDEX É UNICO
 
             builder.Property(x => x.Latitude)
@@ -26,7 +26,8 @@ namespace OlhoVivo.Data.Mappings
                .HasDefaultValue(DateTime.Now.ToUniversalTime()); //Ele gera aqui no .NET antes de fazer o Insert
 
             builder.HasOne(x => x.Vehicle)
-               .WithMany(x => x.VehiclePositions) //Gera uma constraint
+               .WithMany(x => x.VehiclePositions)
+               //.HasForeignKey("")//Gera uma constraint
                .HasConstraintName("FK_VEHICLE_POSITIONS")
                .OnDelete(DeleteBehavior.Cascade);  //deleta todos os relacionados
 

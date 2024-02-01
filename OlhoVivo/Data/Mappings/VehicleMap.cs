@@ -32,6 +32,9 @@ namespace OlhoVivo.Data.Mappings
                 .HasConstraintName("FK_VEHICLE_LINE")
                 .OnDelete(DeleteBehavior.Cascade);  //deleta todos os relacionados
 
+            builder.HasMany(x => x.VehiclePositions)
+                .WithOne(x => x.Vehicle);
+
         }
     }
 }

@@ -4,17 +4,28 @@
     {
         public Line() 
         { }
-        public Line(string name, IList<BusStop> paradas) 
-        { 
+
+        public Line(string name)
+        {
             Name = name;
-            BusStops = paradas;
         }
 
-        public long Id { get; set; }
+        public Line(string name, IList<BusStop> busStops) 
+        { 
+            Name = name;
+            BusStops = busStops;
+        }
+
+        public long Id { get; private set; }
         public string Name { get; private set; }
 
         public IList<Vehicle> Vehicles { get; set; }
-        public IList<BusStop> BusStops { get; private set; } = new List<BusStop>();
+        public IList<BusStop> BusStops { get; private set; }
+
+        public void SetName(string name) 
+        {
+            Name = name;
+        }
 
         public void RemoveBusStop(BusStop busStop) {
         BusStops.Remove(busStop);
