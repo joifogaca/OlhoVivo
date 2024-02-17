@@ -1,12 +1,16 @@
 # OlhoVivo
 
+Baseando no desafio abaixo:
+
+https://github.com/aikodigital/teste-desenvolvedor-net
+
 ### Instalando ferramenta para Migration
 
 `dotnet tool install --global dotnet-ef`
 
-`dotnet ef` ver a vers„o
+`dotnet ef` ver a vers√£o
 
-### Criando a MigraÁ„o
+### Criando a Migra√ß√£o
 
 `dotnet ef migrations add <nome_arquivo>` gera o banco 
 
