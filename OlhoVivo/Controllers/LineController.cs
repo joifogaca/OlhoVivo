@@ -39,7 +39,7 @@ namespace OlhoVivo.Controllers
         {
             try
             {
-                var line = await _dataContext.Lines.SingleOrDefaultAsync(x => x.Id == id);
+                var line = await _dataContext.Lines.FindAsync(id);
 
                 if(line == null) 
                     return NotFound(new ResultViewModel<Line>("ERROR002 - Line not found."));
@@ -81,8 +81,7 @@ namespace OlhoVivo.Controllers
         {
             try
             {
-                var line = _dataContext.Lines.SingleOrDefault(x => x.Id == id);
-
+                var line = await _dataContext.Lines.FindAsync(id);
                 if(line == null) 
                     return NotFound(new ResultViewModel<Line>("ERROR005 - Line not found."));
 
@@ -103,7 +102,7 @@ namespace OlhoVivo.Controllers
         {
             try
             {
-                var line = _dataContext.Lines.SingleOrDefault(x => x.Id == id);
+                var line = await _dataContext.Lines.FindAsync(id);
                 
                 if (line == null)
                     return NotFound(new ResultViewModel<Line>("ERROR007 - Line not found."));

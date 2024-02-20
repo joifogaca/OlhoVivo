@@ -10,7 +10,7 @@
             Name = name;
         }
 
-        public Line(string name, IList<BusStop> busStops) 
+        public Line(string name, List<BusStop> busStops) 
         { 
             Name = name;
             BusStops = busStops;
@@ -19,8 +19,8 @@
         public long Id { get; private set; }
         public string Name { get; private set; }
 
-        public IList<Vehicle> Vehicles { get; set; }
-        public IList<BusStop> BusStops { get; private set; }
+        public List<Vehicle> Vehicles { get; set; }
+        public List<BusStop> BusStops { get; private set; }
 
         public void SetName(string name) 
         {
