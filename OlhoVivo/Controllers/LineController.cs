@@ -61,7 +61,8 @@ namespace OlhoVivo.Controllers
             // TODO Fazer verificação do modelo veio correto 
             try
             {
-                var line = new Line(name);
+                var line = new Line();
+                line.Name = name;
                 _dataContext.Lines.Add(line);
                 await _dataContext.SaveChangesAsync();
 
@@ -85,7 +86,7 @@ namespace OlhoVivo.Controllers
                 if(line == null) 
                     return NotFound(new ResultViewModel<Line>("ERROR005 - Line not found."));
 
-                line.SetName(name);
+                line.Name = name;
                 await _dataContext.SaveChangesAsync();
 
                 return Ok(new ResultViewModel<Line>(line));

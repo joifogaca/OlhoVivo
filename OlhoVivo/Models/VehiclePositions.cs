@@ -2,24 +2,12 @@
 {
     public class VehiclePositions
     {
-        public VehiclePositions()
-        {
-                
-        }
+   
+        public DateTime? DateTime { get; set; } //DateTime no .NEt nunca inicia nulo, se quizer nulo colocar o ponto de ?
+        public double Latitude { get; set; }
+        public double Longitude { get;  set; }
+        public Vehicle Vehicle { get;  set; }
 
-        public VehiclePositions(Vehicle vehicle, 
-            double latitude, double longitude)
-        {
-            Longitude = longitude;
-            Latitude = latitude;
-            Vehicle = vehicle;
-            VehicleId = vehicle.Id;
-        }
-        public DateTime? DateTime { get; private set; } //DateTime no .NEt nunca inicia nulo, se quizer nulo colocar o ponto de ?
-        public double Latitude { get; private set; }
-        public double Longitude { get; private set; }
-        public Vehicle Vehicle { get; private set; }
-
-        public long? VehicleId { get; private set;}
+        public long? VehicleId { get;  set;}
     }
 }

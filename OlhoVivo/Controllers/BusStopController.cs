@@ -53,10 +53,12 @@ namespace OlhoVivo.Controllers
             if (ModelState.IsValid)
                 return BadRequest(ModelState);
             
-
             try
             {
-                var busStop = new BusStop(model.Name, model.Latitude, model.Longitude);
+                var busStop = new BusStop();
+                busStop.Name = model.Name;
+                busStop.Longitude = model.Longitude;
+                busStop.Latitude = model.Latitude;
                 _dataContext.BusStops.Add(busStop);
                 await _dataContext.SaveChangesAsync();
 
@@ -94,8 +96,52 @@ namespace OlhoVivo.Controllers
             }
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] CreateBusStopViewModel model) {
+            
+            if (ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            try
+            {
+                var busStop = await _dataContext.BusStops.FindAsync(id);
+                if (busStop == null)
+                    return NotFound(new ResultViewModel<Line>("ERROR005 - BusStop not found."));
 
+                busStop.Name = model.Name;
+                busStop.Latitude = model.Latitude;
+                busStop.Longitude = model.Longitude;
+                await _dataContext.SaveChangesAsync();
+
+                return Ok(new ResultViewModel<BusStop>(busStop));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "ERROR006 - Server Error");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var busStop = await _dataContext.BusStops.FindAsync(id);
+
+                if (busStop == null)
+                    return NotFound(new ResultViewModel<Line>("ERROR007 - BusStop not found."));
+
+                _dataContext.BusStops.Remove(busStop);
+                await _dataContext.SaveChangesAsync();
+                return Ok(new ResultViewModel<BusStop>(busStop));
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(500, "ERROR006 - Server Error");
+            }
+
+        }
 
     }
 }
