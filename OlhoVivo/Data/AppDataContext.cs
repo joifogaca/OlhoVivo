@@ -12,7 +12,7 @@ namespace OlhoVivo.Data
 
         public DbSet<BusStop> BusStops { get; set; }
 
-        public DbSet<VehiclePositions> PositionVehicles { get; set; }
+        public DbSet<VehiclePositions> VehiclePositions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
