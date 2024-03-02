@@ -22,6 +22,11 @@ https://www.brunobrito.net.br/api-restful-boas-praticas/
 
 https://medium.com/@ramonrune/arquitetando-uma-api-restful-8ffcf892586a
 
+## Regras Négocio
+
+- Um veiculo é cadastro e depois ele e atribuido a uma linha
+- Se um veiculo já possuir uma linha, ele devera se desassoriar da linha dessa linha para ser cadastrado em uma nova
+
 ## Futuras implementações
 
 - A url PUT `/line/{id}/binds-bus-stop` receber uma lista de ids de BusStop

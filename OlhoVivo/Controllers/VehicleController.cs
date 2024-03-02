@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OlhoVivo.Data;
 using OlhoVivo.Models;
 using OlhoVivo.ModelViews;
+using OlhoVivo.ModelViews.Vehicle;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -54,8 +55,29 @@ namespace OlhoVivo.Controllers
 
         // POST api/<VehicleController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] CreateVehicleModelView model)
         {
+            if (ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var vehicle = new Vehicle();
+                vehicle.Name = model.Name;
+                vehicle.Model = model.Model;
+
+               _dataContext.Vehicles.Add(vehicle);
+                await _dataContext.SaveChangesAsync();
+                var vehicleCreated = await _dataContext.Vehicles.FirstOrDefaultAsync(v => v.Name == model.Name);
+
+
+                return CreatedAtAction(nameof(GetAsync), vehicleCreated.Id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         // PUT api/<VehicleController>/5
