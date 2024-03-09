@@ -12,7 +12,7 @@ using OlhoVivo.Data;
 namespace OlhoVivo.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20240201002954_Initial")]
+    [Migration("20240309181755_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,19 +25,19 @@ namespace OlhoVivo.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Lines_BusStop", b =>
+            modelBuilder.Entity("BusStopLine", b =>
                 {
-                    b.Property<long>("BusStopId")
+                    b.Property<long>("BusStopsId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("FK_BusStopLine_LineId")
+                    b.Property<long>("LinesId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("BusStopId", "FK_BusStopLine_LineId");
+                    b.HasKey("BusStopsId", "LinesId");
 
-                    b.HasIndex("FK_BusStopLine_LineId");
+                    b.HasIndex("LinesId");
 
-                    b.ToTable("Lines_BusStop");
+                    b.ToTable("BusStopLine");
                 });
 
             modelBuilder.Entity("OlhoVivo.Models.BusStop", b =>
@@ -56,13 +56,9 @@ namespace OlhoVivo.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Name" }, "IX_BUSSTOP_NAME")
-                        .IsUnique();
 
                     b.ToTable("BusStops");
                 });
@@ -77,13 +73,9 @@ namespace OlhoVivo.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Name" }, "IX_lINE_NAME")
-                        .IsUnique();
 
                     b.ToTable("Lines");
                 });
@@ -101,33 +93,29 @@ namespace OlhoVivo.Migrations
 
                     b.Property<string>("Model")
                         .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LineId");
-
-                    b.HasIndex(new[] { "Name" }, "IX_VEHICLE_NAME")
-                        .IsUnique();
 
                     b.ToTable("Vehicles");
                 });
 
             modelBuilder.Entity("OlhoVivo.Models.VehiclePositions", b =>
                 {
-                    b.Property<DateTime?>("DateTime")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("SMALLDATETIME")
-                        .HasDefaultValue(new DateTime(2024, 2, 1, 0, 29, 54, 470, DateTimeKind.Utc).AddTicks(3858));
-
-                    b.Property<long?>("VehicleId")
                         .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("DateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
@@ -135,25 +123,27 @@ namespace OlhoVivo.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
-                    b.HasKey("DateTime", "VehicleId");
+                    b.Property<long?>("VehicleId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("PositionVehicles");
+                    b.ToTable("VehiclePositions");
                 });
 
-            modelBuilder.Entity("Lines_BusStop", b =>
+            modelBuilder.Entity("BusStopLine", b =>
                 {
                     b.HasOne("OlhoVivo.Models.BusStop", null)
                         .WithMany()
-                        .HasForeignKey("BusStopId")
+                        .HasForeignKey("BusStopsId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_BusStopLine_BusStopId");
+                        .IsRequired();
 
                     b.HasOne("OlhoVivo.Models.Line", null)
                         .WithMany()
-                        .HasForeignKey("FK_BusStopLine_LineId")
+                        .HasForeignKey("LinesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -164,8 +154,7 @@ namespace OlhoVivo.Migrations
                         .WithMany("Vehicles")
                         .HasForeignKey("LineId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_VEHICLE_LINE");
+                        .IsRequired();
 
                     b.Navigation("Line");
                 });
@@ -174,10 +163,7 @@ namespace OlhoVivo.Migrations
                 {
                     b.HasOne("OlhoVivo.Models.Vehicle", "Vehicle")
                         .WithMany("VehiclePositions")
-                        .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_VEHICLE_POSITIONS");
+                        .HasForeignKey("VehicleId");
 
                     b.Navigation("Vehicle");
                 });

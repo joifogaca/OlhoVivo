@@ -2,6 +2,10 @@
 {
     public class BusStop
     {
+        public BusStop()
+        {
+            Lines = new List<Line>();
+        }
         public long Id { get;  set; }
         public string Name { get; set; }
         public double Latitude { get; set; }

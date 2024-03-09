@@ -17,7 +17,7 @@ namespace OlhoVivo.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "NVARCHAR(80)", maxLength: 80, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Latitude = table.Column<double>(type: "float", nullable: false),
                     Longitude = table.Column<double>(type: "float", nullable: false)
                 },
@@ -32,7 +32,7 @@ namespace OlhoVivo.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "NVARCHAR(80)", maxLength: 80, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,24 +40,24 @@ namespace OlhoVivo.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Lines_BusStop",
+                name: "BusStopLine",
                 columns: table => new
                 {
-                    BusStopId = table.Column<long>(type: "bigint", nullable: false),
-                    FKBusStopLineLineId = table.Column<long>(name: "FK_BusStopLine_LineId", type: "bigint", nullable: false)
+                    BusStopsId = table.Column<long>(type: "bigint", nullable: false),
+                    LinesId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Lines_BusStop", x => new { x.BusStopId, x.FKBusStopLineLineId });
+                    table.PrimaryKey("PK_BusStopLine", x => new { x.BusStopsId, x.LinesId });
                     table.ForeignKey(
-                        name: "FK_BusStopLine_BusStopId",
-                        column: x => x.BusStopId,
+                        name: "FK_BusStopLine_BusStops_BusStopsId",
+                        column: x => x.BusStopsId,
                         principalTable: "BusStops",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Lines_BusStop_Lines_FK_BusStopLine_LineId",
-                        column: x => x.FKBusStopLineLineId,
+                        name: "FK_BusStopLine_Lines_LinesId",
+                        column: x => x.LinesId,
                         principalTable: "Lines",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -69,15 +69,15 @@ namespace OlhoVivo.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "NVARCHAR(80)", maxLength: 80, nullable: false),
-                    Model = table.Column<string>(type: "NVARCHAR(80)", maxLength: 80, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LineId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vehicles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VEHICLE_LINE",
+                        name: "FK_Vehicles_Lines_LineId",
                         column: x => x.LineId,
                         principalTable: "Lines",
                         principalColumn: "Id",
@@ -85,52 +85,35 @@ namespace OlhoVivo.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PositionVehicles",
+                name: "VehiclePositions",
                 columns: table => new
                 {
-                    DateTime = table.Column<DateTime>(type: "SMALLDATETIME", nullable: false, defaultValue: new DateTime(2024, 2, 1, 0, 29, 54, 470, DateTimeKind.Utc).AddTicks(3858)),
-                    VehicleId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false)
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    VehicleId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PositionVehicles", x => new { x.DateTime, x.VehicleId });
+                    table.PrimaryKey("PK_VehiclePositions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VEHICLE_POSITIONS",
+                        name: "FK_VehiclePositions_Vehicles_VehicleId",
                         column: x => x.VehicleId,
                         principalTable: "Vehicles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BUSSTOP_NAME",
-                table: "BusStops",
-                column: "Name",
-                unique: true);
+                name: "IX_BusStopLine_LinesId",
+                table: "BusStopLine",
+                column: "LinesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_lINE_NAME",
-                table: "Lines",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Lines_BusStop_FK_BusStopLine_LineId",
-                table: "Lines_BusStop",
-                column: "FK_BusStopLine_LineId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PositionVehicles_VehicleId",
-                table: "PositionVehicles",
+                name: "IX_VehiclePositions_VehicleId",
+                table: "VehiclePositions",
                 column: "VehicleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_VEHICLE_NAME",
-                table: "Vehicles",
-                column: "Name",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vehicles_LineId",
@@ -142,10 +125,10 @@ namespace OlhoVivo.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Lines_BusStop");
+                name: "BusStopLine");
 
             migrationBuilder.DropTable(
-                name: "PositionVehicles");
+                name: "VehiclePositions");
 
             migrationBuilder.DropTable(
                 name: "BusStops");

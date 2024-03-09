@@ -6,6 +6,16 @@ namespace OlhoVivo.Data
 {
     public class AppDataContext : DbContext
     {
+
+        public AppDataContext(DbContextOptions<AppDataContext> options) :base(options) 
+        {
+                
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // You don't actually ever need to call this
+        }
         public DbSet<Vehicle> Vehicles { get; set; }
 
         public DbSet<Line> Lines { get; set; }
@@ -14,18 +24,14 @@ namespace OlhoVivo.Data
 
         public DbSet<VehiclePositions> VehiclePositions { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            options.UseSqlServer("Server=localhost,1433;Database=OlhoVivo;User ID=sa;Password=1q2w3e4r@#$;Trusted_Connection=False; TrustServerCertificate=True;");
-        }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfiguration(new VehicleMap());
-            modelBuilder.ApplyConfiguration(new LineMap());
-            modelBuilder.ApplyConfiguration(new BusStopMap());
-            modelBuilder.ApplyConfiguration(new VehiclePositionMap());
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.ApplyConfiguration(new VehicleMap());
+        //    modelBuilder.ApplyConfiguration(new LineMap());
+        //    modelBuilder.ApplyConfiguration(new BusStopMap());
+        //    modelBuilder.ApplyConfiguration(new VehiclePositionMap());
+        //}
 
     }
 }

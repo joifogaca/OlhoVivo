@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using OlhoVivo.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<AppDataContext>();
+
+
+string SqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDataContext>(option => 
+option.UseSqlServer(SqlConnection));
 
 var app = builder.Build();
 
