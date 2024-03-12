@@ -54,7 +54,7 @@ namespace OlhoVivo.Controllers
         }
 
         // POST api/<VehicleController>
-        [HttpPost]
+        [HttpPost("v1/vehicle")]
         public async Task<IActionResult> Post([FromBody] CreateVehicleModelView model)
         {
             if (ModelState.IsValid)
@@ -81,15 +81,15 @@ namespace OlhoVivo.Controllers
         }
 
         // PUT api/<VehicleController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
-        // DELETE api/<VehicleController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //// DELETE api/<VehicleController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

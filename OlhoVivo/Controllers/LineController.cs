@@ -23,6 +23,10 @@ namespace OlhoVivo.Controllers
             try
             {
                 var lines = await _dataContext.Lines.ToListAsync();
+
+                if(lines is null)
+                    return NotFound("Produtos não encontrados");
+
                 return Ok(new ResultViewModel<List<Line>>(lines));
             }
             catch 
@@ -77,7 +81,7 @@ namespace OlhoVivo.Controllers
         }
 
         // PUT api/<LineController>/5
-        [HttpPut("{id}")]
+        [HttpPut("v1/lines/{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] string name)
         {
             try
@@ -98,7 +102,7 @@ namespace OlhoVivo.Controllers
         }
 
         // DELETE api/<LineController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("v1/lines/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try

@@ -96,7 +96,7 @@ namespace OlhoVivo.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("v1/BusStops/{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] CreateBusStopViewModel model) {
             
             if (ModelState.IsValid)
@@ -121,7 +121,7 @@ namespace OlhoVivo.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("v1/BusStops/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try

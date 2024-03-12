@@ -9,7 +9,7 @@ using OlhoVivo.ModelViews.VehiclePosition;
 
 namespace OlhoVivo.Controllers
 {
-    [Route("v1/[controller]")]
+    
     [ApiController]
     public class VehiclePositionController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace OlhoVivo.Controllers
         => this._dataContext = dataContext;
 
         // GET: api/<VehiclePositionController>
-        [HttpGet]
+        [HttpGet("v1/vehicle-positions/")]
         public async Task<IActionResult> GetAsync()
         {
             try
@@ -34,7 +34,7 @@ namespace OlhoVivo.Controllers
         }
 
         // GET api/<VehiclePositionController>/5
-        [HttpGet("{id}")]
+        [HttpGet("v1/vehicle-positions/{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             try
@@ -54,7 +54,7 @@ namespace OlhoVivo.Controllers
         }
 
         // POST api/<VehiclePositionController>
-        [HttpPost("v1/vehicle/{id}/VehiclePosition")]
+        [HttpPost("v1/vehicle/{id}/vehicle-positions")]
         public async Task<IActionResult> PostAsync([FromBody] CreateVehiclePositionViewModel model, int id)
         {
             if (ModelState.IsValid)
@@ -83,7 +83,7 @@ namespace OlhoVivo.Controllers
         }
 
         // PUT api/<VehiclePositionController>/5
-        [HttpPut("{id}")]
+        [HttpPut("v1/vehicle-positions/{id}")]
         public async Task<IActionResult> PutAsync(int id, CreateVehiclePositionViewModel model)
         {
             if (ModelState.IsValid)
@@ -109,14 +109,14 @@ namespace OlhoVivo.Controllers
         }
 
         // DELETE api/<VehiclePositionController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("v1/vehicle-positions/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
                 var vehiclePositions = await _dataContext.VehiclePositions.FindAsync(id);
 
-                if (vehiclePositions == null)
+                if (vehiclePositions is null)
                     return NotFound(new ResultViewModel<VehiclePositions>("ERROR007 - Vehicle Positions not found."));
 
                 _dataContext.VehiclePositions.Remove(vehiclePositions);
