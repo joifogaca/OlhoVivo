@@ -33,13 +33,16 @@ namespace OlhoVivo.Controllers
         {
             try
             {
-                var line = await _dataContext.Lines.FindAsync(id);
-                
-                if(line == null)
+                var line = await _dataContext
+                    .Lines
+                    .AsNoTracking()
+                    .Include(x => x.BusStops)
+                    .FirstAsync(l => l.Id == id);
+
+                if (line is null) 
                     return NotFound();
 
-                return Ok(new ResultViewModel<List<BusStop>>(line.BusStops));
-               
+                return Ok(line.BusStops);
             }
             catch (Exception)
             {
