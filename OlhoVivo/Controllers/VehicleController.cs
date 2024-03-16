@@ -9,7 +9,7 @@ using OlhoVivo.ModelViews.Vehicle;
 
 namespace OlhoVivo.Controllers
 {
-    [Route("api/[controller]")]
+    
     [ApiController]
     public class VehicleController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace OlhoVivo.Controllers
         => this._dataContext = dataContext;
 
         // GET: api/<VehicleController>
-        [HttpGet("v1/vehicle")]
+        [HttpGet("v1/vehicles")]
         public async Task<IActionResult> GetAsync()
         {
             try
@@ -26,10 +26,10 @@ namespace OlhoVivo.Controllers
                 var vehicle = await _dataContext.Vehicles.ToListAsync();
                 return Ok(new ResultViewModel<List<Vehicle>>(vehicle));
             }
-            catch
+            catch(Exception ex)
             {
 
-                return StatusCode(500, new ResultViewModel<List<Vehicle>>("ERROR001 - Falha interna no servidor"));
+                return StatusCode(500, new ResultViewModel<List<Vehicle>>("ERROR001 - Falha interna no servidor: " + ex.Message));
             }
         }
 
@@ -46,10 +46,10 @@ namespace OlhoVivo.Controllers
 
                 return Ok(new ResultViewModel<Vehicle>(vehicle));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                return StatusCode(500, new ResultViewModel<Line>("ERROR003 - Server Error"));
+                return StatusCode(500, new ResultViewModel<Line>("ERROR003 - Server Error: " + ex.Message));
             }
         }
 
@@ -57,7 +57,7 @@ namespace OlhoVivo.Controllers
         [HttpPost("v1/vehicle")]
         public async Task<IActionResult> Post([FromBody] CreateVehicleModelView model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             try
@@ -66,6 +66,11 @@ namespace OlhoVivo.Controllers
                 vehicle.Name = model.Name;
                 vehicle.Model = model.Model;
 
+                var line = _dataContext.Lines.Find(model.LineId);
+
+                if (line is null)
+                    return NotFound("Linha atribuida para o veículo não encontrada");
+
                _dataContext.Vehicles.Add(vehicle);
                 await _dataContext.SaveChangesAsync();
                 var vehicleCreated = await _dataContext.Vehicles.FirstOrDefaultAsync(v => v.Name == model.Name);
@@ -73,23 +78,73 @@ namespace OlhoVivo.Controllers
 
                 return CreatedAtAction(nameof(GetAsync), vehicleCreated.Id);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                return StatusCode(500, new ResultViewModel<Line>("Server Error: " + ex.Message));
             }
         }
 
-        // PUT api/<VehicleController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+        //PUT api/<VehicleController>/5
+        [HttpPut("v1/vehicle/{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] CreateVehicleModelView model)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var vehicle = _dataContext.Vehicles.Find(id);
+
+                if (vehicle is null)
+                    return NotFound("Veiculo não encontrado.");
+
+                vehicle.Name = model.Name;
+                vehicle.Model = model.Model;
+
+                var line = _dataContext.Lines.Find(model?.LineId);
+
+                if (line is null)
+                    return NotFound("Linha não encontrada");
+
+                vehicle.Line = line;
+                await _dataContext.SaveChangesAsync();
+
+                return Ok(new ResultViewModel<Vehicle>(vehicle));
+
+            }
+            catch (Exception ex )
+            {
+                return StatusCode(500, new ResultViewModel<Line>("Server Error: " + ex.Message));
+
+            }
+        }
 
         //// DELETE api/<VehicleController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        [HttpDelete("v1/vehicle/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var vehicle = _dataContext.Vehicles.Find(id);
+
+                if(vehicle is null)
+                    return NotFound("Veiculo não encontrado");
+
+                //colocar ativo igual a false e rodar migration
+                vehicle.IsActive = false;
+
+                await _dataContext.SaveChangesAsync();
+
+                return Ok(new ResultViewModel<Vehicle>(vehicle));
+
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new ResultViewModel<Line>("Server Error: " + ex.Message));
+            }
+
+        }
     }
 }

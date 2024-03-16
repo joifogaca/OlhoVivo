@@ -11,5 +11,8 @@ namespace OlhoVivo.ModelViews.Vehicle
         [Required(ErrorMessage = "Modelo é um campo Obrigátorio")]
         [StringLength(40, MinimumLength = 6, ErrorMessage = "Este campo deve conter entre 6 e 40 caracteres)")]
         public string Model { get; set; }
+
+        [Required(ErrorMessage = "O Id da Linha é um campo Obrigátorio")]
+        public long LineId { get; set; }
     }
 }
