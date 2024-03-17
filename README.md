@@ -22,8 +22,16 @@ https://www.brunobrito.net.br/api-restful-boas-praticas/
 
 https://medium.com/@ramonrune/arquitetando-uma-api-restful-8ffcf892586a
 
+## Repositorio Generico
+
+https://marcionizzola.medium.com/criando-reposit%C3%B3rios-gen%C3%A9ricos-com-c-bb8c53177e13
+
+https://www.luisdev.com.br/2022/12/19/padrao-repository-com-asp-net-core-e-ef-core/
+
+https://dotnettutorials.net/lesson/generic-repository-pattern-csharp-mvc/#:~:text=The%20Generic%20Repository%20pattern%20in%20C%23%20is%20a,than%20having%20separate%20repositories%20for%20each%20entity%20type.
 ## Regras Négocio
 
+- Um veiculo, linha e Ponto de ônibus não será removido, será apenas desativado.
 - Um veiculo é cadastro e depois ele e atribuido a uma linha
 - Se um veiculo já possuir uma linha, ele devera se desassoriar da linha dessa linha para ser cadastrado em uma nova
 

@@ -23,7 +23,9 @@ namespace OlhoVivo.Controllers
         {
             try
             {
-                var vehicle = await _dataContext.Vehicles.ToListAsync();
+                var vehicle = await _dataContext.Vehicles
+                    .Where(v => v.IsActive == true)
+                    .ToListAsync();
                 return Ok(new ResultViewModel<List<Vehicle>>(vehicle));
             }
             catch(Exception ex)
@@ -39,7 +41,9 @@ namespace OlhoVivo.Controllers
         {
             try
             {
-                var vehicle = await _dataContext.Vehicles.FindAsync(id);
+                var vehicle = await _dataContext.Vehicles
+                    .Where(v => v.IsActive == true)
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
                 if (vehicle == null)
                     return NotFound(new ResultViewModel<Vehicle>("ERROR002 - Line not found."));
