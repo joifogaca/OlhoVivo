@@ -12,6 +12,8 @@ namespace OlhoVivo.Data
                 
         }
 
+        public AppDataContext() { }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // You don't actually ever need to call this

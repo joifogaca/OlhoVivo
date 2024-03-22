@@ -1,12 +1,11 @@
 ﻿namespace OlhoVivo.Models
 {
-    public class Vehicle
+    public class Vehicle : BaseModel
     {
         public Vehicle()
         {
             VehiclePositions = new List<VehiclePositions>();
         }
-        public long Id { get; set; }
         public string Name { get; set; }
         public string Model { get;  set; }
         public long LineId { get; set; }
